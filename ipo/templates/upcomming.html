@@ -1,0 +1,243 @@
+<!-- home.html -->
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Upcomming IPO{% endblock %}
+
+{% block content %}
+
+<style>
+  .card-logo {
+    width: 100px;
+    margin-bottom: 20px;
+  }
+
+  .card-details {
+    margin-bottom: 20px;
+  }
+
+  .card-details div {
+    margin-bottom: 10px;
+  }
+
+  .btn-rhp {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-drhp:hover {
+    background-color: #c82333;
+    color: #fff;
+  }
+
+  .btn-drhp {
+    background-color: #e53a4b;
+    color: #fff;
+  }
+
+  body {
+    background-color: rgb(246, 245, 245);
+  }
+</style>
+<nav class="mx-5 my-3" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'ipo' %}">IPO</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'upcomming' %}" style="color: blue;">Upcomming IPO</a></li>
+  </ol>
+</nav>
+
+<div class="mx-5 my-3">
+  <h3>Upcomming Page</h3>
+  <p>Companies that have filled for an IPO with SEBI. Few details might be disclosed by the companies later.</p>
+</div>
+
+
+<div class="row mx-4 g-5">
+  <div class="col-12 col-md-6 col-lg-4">
+    <div style="background: #fff;  border-radius: 10px; border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    " class="card">
+      <div class="card-body">
+        <div class="d-flex flex-row  px-3  align-items-center">
+          <img width="110px" height="47px" src="{% static 'ipo/assets/img/image.png' %}" alt="Nova Agritech Ltd." class="card-logo me-5">
+          <h5 class="card-title text-primary ">Nova Agritech Ltd.</h5>
+        </div>
+        <div class="card-details row p-2 pb-0">
+          <div class="row">
+            <div class="col-4 text-secondary">PRICE BAND<br><span class="fw-bold text-dark">Rs 39 - 41</span></div>
+            <div class="col-4 text-secondary">OPEN<br><span class="fw-bold text-dark">2024-01-22</span></div>
+            <div class="col-4 text-secondary">CLOSE<br><span class="fw-bold text-dark">2024-01-24</span></div>
+          </div>
+          <div class="row">
+            <div class="col-4 text-secondary">ISSUE SIZE<br><span class="fw-bold text-dark">143.81 Cr.</span></div>
+            <div class="col-4 text-secondary">ISSUE TYPE<br><span class="fw-bold text-dark">Book Built</span></div>
+            <div class="col-4 text-secondary">LISTING DATE<br><span class="fw-bold text-dark">2024-01-30</span></div>
+          </div>
+        </div>
+        <div class="card-buttons">
+          <a href="https://www.sebi.gov.in/sebi_data/attachdocs/1287656584090.pdf" target="_blank" class="btn btn-rhp">RHP</a>
+          <a href="https://www.sebi.gov.in/sebi_data/attachdocs/1287656584090.pdf" target="_blank" class="btn btn-drhp">DRHP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IPO Cards -->
+
+  {% for ipo in upcoming_ipos %}
+  <div class="col-12 col-md-6 col-lg-4">
+      <div style="background: #fff; border-radius: 10px; border: none; box-shadow: 0 0 10px rgba(0, 0, 0, 0.10);" class="card">
+          <div class="card-body">
+              <div class="d-flex flex-row px-3 align-items-center">
+                <img width="110px" height="47px" src="{% if ipo.company_logo %}{{ ipo.company_logo }}{% else %}{% static 'ipo/assets/img/image.png' %}{% endif %}" alt="{{ ipo.name }}" class="card-logo me-5">
+                  <h5 class="card-title text-primary">{{ ipo.company_name }}</h5>
+              </div>
+              <div class="card-details row p-2 pb-0">
+                  <div class="row">
+                      <div class="col-4 text-secondary">PRICE BAND<br><span class="fw-bold text-dark">{{ ipo.price_band }}</span></div>
+                      <div class="col-4 text-secondary">OPEN<br><span class="fw-bold text-dark">{{ ipo.open_date }}</span></div>
+                      <div class="col-4 text-secondary">CLOSE<br><span class="fw-bold text-dark">{{ ipo.close_date }}</span></div>
+                  </div>
+                  <div class="row">
+                      <div class="col-4 text-secondary">ISSUE SIZE<br><span class="fw-bold text-dark">{{ ipo.issue_size }}</span></div>
+                      <div class="col-4 text-secondary">ISSUE TYPE<br><span class="fw-bold text-dark">{{ ipo.issue_type }}</span></div>
+                      <div class="col-4 text-secondary">LISTING DATE<br><span class="fw-bold text-dark">{{ ipo.listing_date }}</span></div>
+                  </div>
+              </div>
+              <div class="card-buttons d-flex flex-row gap-2">
+                  <a href="{{ ipo.rhp_url }}" class="btn btn-rhp" target="_blank">RHP</a>
+                  <a href="{{ ipo.drhp_url }}" class="btn btn-drhp" target="_blank">DRHP</a>
+              </div>
+          </div>
+      </div>
+  </div>
+  {% empty %}
+  <p>No upcoming IPOs found.</p>
+  {% endfor %}
+  <!-- <div class="col-12 col-md-6 col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Special title treatment</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+
+
+<section style="margin-top: 10rem;" class="mx-5">
+
+  <div class="">
+    <h2 class="text-dark fw-semibold">Frequently Asked Questions ? </h2 class="text-dark">
+    <p style="font-size: 1.2rem; color: black;">Find answers to common questions that come in your mind related to IPO.</p>
+  </div>
+
+  <style>
+    .collapse {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .collapse.show {
+      max-height: 1000px;
+      /* Adjust as needed */
+      transition: max-height 0.5s ease-in;
+    }
+
+    .faq-header {
+      cursor: pointer;
+      padding: 15px;
+      background-color: white;
+      border: none;
+    }
+
+    .card-body {
+      padding: 15px;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .faq-icon {
+      float: right;
+    }
+
+
+
+    .faq-icon:before {
+      content: "+";
+      font-size: xx-large;
+      color: rgb(92, 139, 254);
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .faq-header.active .faq-icon:before {
+      content: "-";
+      font-size: xx-large;
+      color: rgb(92, 139, 254);
+      font-weight: bold;
+      line-height: 1;
+    }
+  </style>
+
+  <!-- FAQ Questions -->
+
+  <div class="my-5 row gap-4">
+    <div class="card py-4 px-2" style="border: none; font-size: large; font-weight: 900;">
+      <div class="card-header faq-header" data-toggle="collapse" data-target="#faq1" aria-expanded="true" aria-controls="faq1">
+        How to Subscribe to an IPO?
+        <span class="faq-icon "></span>
+      </div>
+      <div id="faq1" class="collapse" data-parent="#faq">
+        <div class="card-body" style="border: none; font-weight: 700;">
+          <ul>
+            <li>Step 1: Login to your respective service provider.</li>
+            <li>Step 2: Click on the IPO button.</li>
+            <li>Step 3: Select the IPO you want to bid and enter the relevant details.</li>
+            <li>Step 4: Your subscription will be completed once you make the payment or give permission.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card  py-4 px-2" style="border: none; font-size: large; font-weight: bold;">
+      <div class="card-header faq-header" data-toggle="collapse" data-target="#faq1" aria-expanded="true" aria-controls="faq1">
+        Should I buy an IPO first day?
+        <span class="faq-icon "></span>
+      </div>
+      <div id="faq1" class="collapse" data-parent="#faq">
+        <div class="card-body" style="border: none;">
+          <ul>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsum modi eligendi accusamus fugit nemo minus quod voluptates odio. Natus commodi totam assumenda necessitatibus itaque similique id perferendis cumque impedit.
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var faqHeaders = document.querySelectorAll('.card-header');
+    faqHeaders.forEach(function(header) {
+      header.addEventListener('click', function() {
+        var content = this.nextElementSibling;
+        content.classList.toggle('show');
+        this.classList.toggle('active'); // Toggle active class on header
+      });
+    });
+  });
+</script>
+
+
+
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

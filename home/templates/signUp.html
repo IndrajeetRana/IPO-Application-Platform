@@ -1,0 +1,308 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .container img {
+      width: 150px;
+
+    }
+
+    .container h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .input-group-password {
+      position: relative;
+      width: 100%;
+    }
+
+    .input-group-password input {
+      width: calc(100% - 5px);
+      /* Adjusted width to accommodate the password toggle */
+
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .input-group-password .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .input-group-password .toggle-password img {
+      width: 20px;
+      /* Adjust the width to desired size */
+      height: 20px;
+      /* Adjust the height to desired size */
+      margin-top: 15px;
+      margin-left: 80%;
+
+    }
+
+
+    .terms {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .terms a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    .captcha {
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #6A4DFD;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      /* Add space between buttons */
+    }
+
+    .btn:hover {
+      background-color: #563bdf;
+    }
+
+    .divider-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem auto;
+      /* Center the button and add space */
+      background-color: #E8E8E8;
+      /* Set background color to grey */
+      border: 1px solid #ccc;
+      /* Add border */
+      border-radius: 4px;
+      /* Add border radius */
+      position: relative;
+      font-size: 1rem;
+      color: #666;
+      cursor: default;
+      width: fit-content;
+      /* Make button size fit content */
+      padding: 0.5rem 0.1 rem;
+      /* Add padding around the text */
+    }
+
+    .divider-btn::before,
+    .divider-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      /* Set width to 100% to extend lines fully */
+      border-bottom: 1px solid #ccc;
+    }
+
+    .divider-btn::before {
+      left: -45%;
+      /* Adjust left position to extend line fully */
+      margin-right: 0.5em;
+    }
+
+    .divider-btn::after {
+      right: -45%;
+      /* Adjust right position to extend line fully */
+      margin-left: 0.5em;
+    }
+
+    .social-login {
+      margin: 20px 0;
+    }
+
+    .social-login button {
+      background-color: #E0E0E0;
+      color: black;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
+      width: 100%;
+      padding: 8px;
+    }
+
+
+
+
+    .social-login button img {
+
+      width: 20px;
+      height: 20px;
+
+    }
+
+    .login-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #6A4DFD;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .check input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img src="{% static 'Images/logo.jpg' %}" alt="BLUESTOCK">
+    <h1>Create an account</h1>
+    <form action="" method="post">
+      {% csrf_token %}
+
+      
+
+      <div class="input-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Saisha Wagh" required>
+      </div>
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="hello@bluestock.in" required>
+      </div>
+      <div class="input-group input-group-password">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="•••••••" required>
+        <span class="toggle-password" onclick="togglePassword()">
+          <img src="{% static 'Images/eyeClose.png' %}" alt="Toggle Password Visibility" id="togglePasswordIcon" style="cursor: pointer;"> 
+        </span>
+      </div>
+      <div class="check">
+        <input type="checkbox" required> <label>By continuing, you agree to our <a href="#">terms of service</a>.</label>
+      </div>
+
+      {% if messages %}
+      {% for message in messages %}
+      {% if 'success' in message.tags %}
+      <div style="text-align: left; font-size: .8rem; color: green; font-weight: bolder; font-family: sans-serif;" style="color: green;">
+        {{ message }}
+      </div>
+      {% else %}
+      <div style="font-size: .8rem ;text-align: left; color: red; font-weight: bolder; font-family: sans-serif;">
+        {{ message }}
+      </div>
+      <br>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+
+      <button type="submit" class="btn">Sign up</button>
+      <button type="button" class="divider-btn">or sign in with</button>
+    </form>
+    <div class="social-login">
+      <button class="">
+        <img src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo" /> &nbsp; Continue with Google
+      </button>
+
+    </div>
+    <div class="login-link">
+      Already have an account? <a href="{% url 'home:signin' %}">Sign in here</a>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const passwordFieldType = passwordField.getAttribute('type');
+      const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+      const eyeOpenIcon = "{% static 'Images/eyeOpen.png' %}";
+      const eyeClosedIcon = "{% static 'Images/eyeClose.png' %}";
+
+      if (passwordFieldType === 'password') {
+        passwordField.setAttribute('type', 'text');
+        togglePasswordIcon.src = eyeOpenIcon;
+      } else {
+        passwordField.setAttribute('type', 'password');
+        togglePasswordIcon.src = eyeClosedIcon;
+      }
+    }
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+</html>

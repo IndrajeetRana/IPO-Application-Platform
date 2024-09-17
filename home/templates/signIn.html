@@ -1,0 +1,253 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      width: 400px;
+      text-align: center;
+    }
+
+    .login-container img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .login-container h1 {
+      margin-bottom: 1rem;
+    }
+
+    .login-container input[type="email"],
+    .login-container input[type="password"],
+    .login-container input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .login-container input[type="checkbox"] {
+      background-color: #6a0dad;
+      margin-right: 0.5rem;
+    }
+
+    .login-container label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0.5rem 0;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      background-color: #5b59d6;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .login-container button:disabled {
+      background-color: #ccc;
+    }
+
+    .login-container .divider-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem auto;
+      background-color: #E8E8E8;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      position: relative;
+      font-size: 1rem;
+      color: #666;
+      cursor: default;
+      width: fit-content;
+      padding: 0.5rem 1rem;
+    }
+
+    .login-container .divider-btn::before,
+    .login-container .divider-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .login-container .divider-btn::before {
+      left: -45%;
+      margin-right: 0.5em;
+    }
+
+    .login-container .divider-btn::after {
+      right: -45%;
+      margin-left: 0.5em;
+    }
+
+    .login-container .google-btn {
+      background-color: #E0E0E0;
+      color: black;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .login-container .google-btn img {
+      width: 20px;
+      height: auto;
+      margin-right: 0.5rem;
+    }
+
+    .login-container .create-account {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .login-container .forgot-password {
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+      text-align: right;
+    }
+
+    .login-container .forgot-password a {
+      color: #5b59d6;
+      text-decoration: none;
+    }
+
+    .login-container .forgot-password a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 300px;
+      margin: 50px auto;
+    }
+
+    .show-password {
+      position: relative;
+    }
+
+    .show-password .toggle-password {
+      position: absolute;
+      right: 18px;
+      top: 65%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .show-password .toggle-password img {
+      width: 20px;
+      height: 20px;
+      margin-left: 30%;
+    }
+
+    .password-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.15rem 0rem;
+      margin-bottom: 0;
+    }
+  </style>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+  <div class="login-container">
+    <img src="{% static 'Images/logo.jpg' %}" alt="BLUESTOCK">
+    <form action="" method="post">
+      {% csrf_token %}
+      <label for="EmailAddress">Email Address</label>
+      <input type="text" id="EmailAddress" name="email" placeholder="johndoe@gmail.com" required>
+
+      <div class="show-password">
+        <label for="Password">Password</label>
+        <input type="password" id="Password"  name="password" placeholder="Password" required>
+        <span class="toggle-password" onclick="togglePassword()">
+          <img src="{% static 'Images/eyeClose.png' %}" alt="Toggle Password Visibility" id="togglePasswordIcon" style="cursor: pointer;"> 
+        </span>
+      </div>
+
+      <div class="forgot-password">
+        <a href="{% url 'home:forgetPassword' %}">Forgot Password?</a>
+      </div>
+
+      {% if messages %}
+      {% for message in messages %}
+      {% if 'success' in message.tags %}
+      <div style="text-align: left; font-size: .8rem; color: green; font-weight: bolder; font-family: sans-serif;" style="color: green;">
+        {{ message }}
+      </div>
+      {% else %}
+      <div style="font-size: .8rem ;text-align: left; color: red; font-weight: bolder; font-family: sans-serif;">
+        {{ message }}
+      </div>
+      <br>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+
+      <div class="">
+        <label>
+          <input type="checkbox"> Keep me signed in
+        </label>
+        <button type="submit">Login</button>
+        <button type="button" class="divider-btn">or sign in with</button>
+        <button type="button" class="google-btn">
+            <img src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo" /> Continue with Google
+        </button>
+      </div>
+    </form>
+    <div class="create-account">
+      <a href="{% url 'home:signup' %}">Create an account</a>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('Password');
+      const passwordFieldType = passwordField.getAttribute('type');
+      const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+      const eyeOpenIcon = "{% static 'Images/eyeOpen.png' %}";
+      const eyeClosedIcon = "{% static 'Images/eyeClose.png' %}";
+
+      if (passwordFieldType === 'password') {
+        passwordField.setAttribute('type', 'text');
+        togglePasswordIcon.src = eyeOpenIcon;
+      } else {
+        passwordField.setAttribute('type', 'password');
+        togglePasswordIcon.src = eyeClosedIcon;
+      }
+    }
+  </script>
+</body>
+
+</html>

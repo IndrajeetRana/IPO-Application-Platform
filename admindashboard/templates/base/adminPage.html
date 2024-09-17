@@ -1,0 +1,605 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Bootstrap icons-->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" /> -->
+  <!-- Bootstrap 5 CDN-->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+  <title>{% block title %}Dashboard{% endblock %} | Bluestock Fintech</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 210px;
+      background-color: #f1f2f7;
+      color: #ecf0f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 15px;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #34495e;
+      gap: 10px;
+    }
+
+    .nav-menu {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .nav-menu li {
+      width: 100%;
+      text-align: center;
+    }
+
+    .nav-menu li a {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      color: grey;
+      text-decoration: none;
+    }
+
+    .nav-menu li a img.nav-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    .nav-menu li.active {
+      background-color: rgb(228, 231, 245);
+      border-radius: 0.52rem;
+    }
+
+    .nav-menu li.active a {
+      color: rgb(139, 62, 234);
+    }
+
+    .nav-menu li.active a img.nav-icon {
+      filter: brightness(0) saturate(100%) invert(35%) sepia(61%) saturate(6325%) hue-rotate(255deg) brightness(94%) contrast(95%);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      background-color: #ecf0f1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background-color: rgb(255, 255, 255);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 0px rgba(0, 0, 0, 0.12);
+      border-bottom: 2px solid #e4e5e6;
+    }
+
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-container input {
+      padding: 10px 30px 10px 10px;
+      background-color: #f4f5f8;
+      border-radius: 5px;
+      border: none;
+      width: 600px;
+    }
+
+    .search-container input:focus {
+      outline: none;
+    }
+
+    .search-container .search-icon {
+      position: absolute;
+      right: 10px;
+      color: #ccc;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-info span {
+      margin-left: 10px;
+    }
+
+    .user-info i {
+      margin-right: 15px;
+      font-size: 1.2em;
+      color: #34495e;
+    }
+
+    .user-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background-color: #ffe6cc;
+      border-radius: 50%;
+    }
+
+    .logo-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      color: white;
+      font-weight: bold;
+      background-color: rgb(139, 62, 234);
+      border-radius: 50%;
+    }
+
+    .dashboard-content {
+      flex-grow: 1;
+      overflow-y: scroll;
+      height: 100vh;
+      background-color: white;
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const navItems = document.querySelectorAll(".sidebar-nav-item a");
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", function(event) {
+          navItems.forEach((i) => i.parentElement.classList.remove("active"));
+          this.parentElement.classList.add("active");
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">BF</div>
+  
+        <a  href="/" style="text-decoration:none;" class=""><p style="color: rgb(139, 62, 234); font-weight: bolder">
+        Bluestock Fintech
+        </p>
+        </a>
+      </div>
+
+      <ul class="nav-menu">
+        <p style="margin: 0.4rem 1rem; font-size: 0.97rem; color: grey">
+          MENU
+        </p>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'adminPage' %}active{% endif %}">
+          <a href="{% url 'admindashboard:adminPage' %}"><img src="{% static 'icons/chart.svg' %}" class="nav-icon" alt="Dashboard" />
+            Dashboard</a>
+        </li>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'manageIpo' or request.resolver_match.url_name == 'registerIpo' %}active{% endif %}">
+          <a href="{% url 'admindashboard:manageIpo' %}"><img src="{% static 'icons/buy.svg' %}" class="nav-icon" alt="Manage IPO" />
+            Manage IPO</a>
+        </li>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'ipoSubscription' %}active{% endif %}">
+          <a href=""><img src="{% static 'icons/document.svg' %}" class="nav-icon" alt="IPO Subscription" />
+            IPO Subscription</a>
+        </li>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'ipoAllotment' %}active{% endif %}">
+          <a href=""><img src="{% static 'icons/chat.svg' %}" class="nav-icon" alt="IPO Allotment" />
+            IPO Allotment</a>
+        </li>
+        <p style="
+              margin: 0.4rem 1rem;
+              margin-top: 2rem;
+              font-size: 0.97rem;
+              color: grey;
+            ">
+          OTHERS
+        </p>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+          <a href=""><img src="{% static 'icons/setting.svg' %}" class="nav-icon" alt="Settings" />
+            Settings</a>
+        </li>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'apiManager' %}active{% endif %}">
+          <a href=""><img src="{% static 'icons/wallet.svg' %}" class="nav-icon" alt="API Manager" />
+            API Manager</a>
+        </li>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}">
+          <a href=""><img src="{% static 'icons/profile.svg' %}" class="nav-icon" alt="Accounts" />
+            Accounts</a>
+        </li>
+        <li class="sidebar-nav-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}">
+          <a href=""><img src="{% static 'icons/info.svg' %}" class="nav-icon" alt="Help" />
+            Help</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="search-container">
+          <input type="text" placeholder="Search" />
+          <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="user-info">
+          <div class="user-icon">V</div>
+          <span>Hi, {{username}}</span>
+          <i class="fas fa-caret-down"></i>
+          <i class="fas fa-bell"></i>
+        </div>
+      </header>
+      <div class="dashboard-content">
+        {% block content %}
+
+        <style>
+          .dashboard {
+            padding: 2rem;
+            padding-top: 0;
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .ipo-dashboard,
+          .quick-links,
+          .main-board-ipo {
+
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            padding: 1rem;
+            padding-top: 0;
+
+            background-color: white;
+            border-right: 1px solid #e4e5e6;
+
+
+          }
+
+          .ipo-dashboard {
+            flex: 1.8;
+            margin-right: 20px;
+          }
+
+          .quick-links {
+            flex: 2;
+            padding: 20px;
+            padding-top: 0%;
+          }
+
+          .main-board-ipo {
+            flex: 2.3;
+          }
+
+          /* .circle-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+          }*/
+
+          /* .circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border-collapse: initial;
+            width: 100px;
+            height: 100px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+          }
+*/
+          .circle-container {
+            position: relative;
+
+          }
+
+          .outer-circle {
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-width: 2px;
+            border-style: solid;
+            border-top: none;
+            border-left: none;
+          }
+
+          .circle {
+            border-radius: 50%;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .gain {
+            width: 120px;
+            height: 120px;
+            background-color: rgb(68, 198, 226);
+          }
+
+          .gain-outer {
+            width: 126px;
+            height: 126px;
+            top: 150px;
+            left: 10px;
+            border-color: rgb(68, 198, 226);
+          }
+
+          .loss {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(131, 130, 222, 0.91);
+
+            z-index: 1;
+          }
+
+          .loss-outer {
+            width: 106px;
+            height: 106px;
+            top: 40px;
+            left: 18%;
+            border-color: rgb(131, 130, 222);
+            background-color: transparent;
+            z-index: 1;
+          }
+
+          .total {
+            width: 150px;
+            height: 150px;
+            background-color: rgb(250, 167, 69);
+          }
+
+          .total-outer {
+            width: 156px;
+            height: 156px;
+            top: 75px;
+            left: 40%;
+            border-color: rgb(250, 167, 69);
+          }
+
+          .quick-links ul {
+            list-style-type: none;
+            padding: 0;
+          }
+
+          .quick-links li {
+            margin: 10px 0;
+          }
+
+          .quick-links a {
+            text-decoration: none;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .donut-chart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+          }
+
+          .tooltip {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+          }
+
+          .legend {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+          }
+
+          .legend div {
+            display: flex;
+            align-items: center;
+          }
+
+          .dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+          }
+
+          .upcoming {
+            background-color: #5856d6;
+          }
+
+          .new-listed {
+            background-color: #a5b1ff;
+          }
+
+          .ongoing {
+            background-color: #e1e1e1;
+          }
+
+          h1 {
+            font-family: "Poppins";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 23px;
+            /* identical to box height, or 128% */
+            letter-spacing: 0.5px;
+            color: #1f384c;
+            padding: 2rem;
+            padding-bottom: 0;
+          }
+        </style>
+
+        <h1>Dashboard</h1>
+        <div class="dashboard">
+          <div class="ipo-dashboard">
+            <h3>IPO Dashboard India</h3>
+            <div class="circle-container">
+              <div class="outer-circle gain-outer">
+                <div class="circle gain">
+                  <p style="font-size: 1.5rem;"> 20 <br> <span style="font-size: small; letter-spacing: 1px;">IPO in Gain</span></p>
+                </div>
+              </div>
+              <div class="outer-circle loss-outer">
+                <div class="circle loss">9<br>IPO in Loss</div>
+              </div>
+              <div class="outer-circle total-outer">
+                <div class="circle total">30<br>Total IPO</div>
+              </div>
+            </div>
+          </div>
+          <div class="quick-links">
+            <h3>Quick Links</h3>
+            <p style="color: gray;">Adipiscing elit, sed do eiusmod tempor</p>
+            <ul>
+              <li style="padding-bottom: .9rem; border-bottom: 0.5px solid #e4e5e6;">
+                <img style="float: left; margin-top: -0.2rem; border-radius: 50%" width="30" src="{% static 'images/nse.webp' %}" alt="">
+                <a href="#" style="padding: .3rem;">NSE India <span style="font-size: .8rem; color: gray;">Visit Now</span></a>
+              </li>
+              <li style="padding-bottom: .9rem; border-bottom: 0.5px solid #e4e5e6;">
+                <img style="float: left; margin-top: -0.2rem; border-radius: 50%" width="30" src="{% static 'images/image.png' %}" alt="">
+                <a href="#" style="padding: .3rem;">BSE India <span style="font-size: .8rem; color: gray;">Visit Now</span></a>
+              </li>
+              <li style="padding-bottom: .9rem; border-bottom: 0.5px solid #e4e5e6;">
+                <img style="float: left; margin-top: -0.2rem; border-radius: 50%" width="30" src="{% static 'images/image1.png' %}" alt="">
+                <a href="#" style="padding: .3rem;">SEBI <span style="font-size: .8rem; color: gray;">Visit Now</span></a>
+              </li>
+              <li style="padding-bottom: .9rem; border-bottom: 0.5px solid #e4e5e6;">
+                <img style="float: left; margin-top: -0.2rem; border-radius: 50%;" width="30" src="{% static 'images/image2.png' %}" alt="">
+                <a href="#" style="padding: .3rem;">Money Control <span style="font-size: .8rem; color: gray;">Visit Now</span></a>
+              </li>
+            </ul>
+          </div>
+          <div class="main-board-ipo">
+            <h3>Main Board IPO
+
+              <style>
+                #viewBtn {
+                  border: 2px solid rgb(187, 187, 255); /* Blue border */
+                  background-color: transparent; /* Transparent background */
+                  color: rgb(63, 63, 217); /* Blue text color */
+                  padding: 10px 15px; /* Padding for the button */
+                  border-radius: 5px; /* Optional: rounded corners */
+                  cursor: pointer; /* Pointer cursor on hover */
+                  font-size: 10px; /* Font size */
+                  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+                }
+                
+                #viewBtn:hover {
+                  background-color: rgb(84, 84, 234); /* Blue background on hover */
+                  color: white; /* White text color on hover */
+                }
+              </style>
+              <p style="float: right; margin-top: -.4rem;">
+                <button id="viewBtn" class="btn">View Report</button>
+
+              </p>
+            </h3>
+            <p style="color: grey;">From 01 Jan 2024</p>
+            <div class="donut-chart">
+              <div class="tooltip">
+                Afternoon IPO NSE & BSE <br />
+                15
+              </div>
+              <canvas id="myChart"></canvas>
+            </div>
+            <div class="legend">
+              <div>
+                <span class="dot upcoming"></span>Upcoming <span>15</span>
+              </div>
+              <div>
+                <span class="dot new-listed"></span>New Listed <span>25</span>
+              </div>
+              <div>
+                <span class="dot ongoing"></span>Ongoing <span>2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+          const ctx = document.getElementById("myChart").getContext("2d");
+          const data = {
+            labels: ["Upcoming", "New Listed", "Ongoing"],
+            datasets: [{
+              label: "IPO Status",
+              data: [15, 25, 2],
+              backgroundColor: ["#5856d6", "#a5b1ff", "#e1e1e1"],
+              hoverOffset: 4,
+            }, ],
+          };
+          /* Ellipse 17 */
+
+          const config = {
+            type: "doughnut",
+            data: data,
+            options: {
+              plugins: {
+                tooltip: {
+                  enabled: false,
+                },
+              },
+            },
+          };
+
+          const myChart = new Chart(ctx, config);
+
+          document
+            .querySelector(".donut-chart")
+            .addEventListener("mouseenter", () => {
+              document.querySelector(".tooltip").style.display = "block";
+            });
+
+          document
+            .querySelector(".donut-chart")
+            .addEventListener("mouseleave", () => {
+              document.querySelector(".tooltip").style.display = "none";
+            });
+        </script>
+
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

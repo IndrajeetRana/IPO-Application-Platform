@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming IPO Information</title>
+    {% extends 'base/adminPage.html' %}
+    {% load static %}
+    {% block title %}Upcoming IPO Information{% endblock %}
+
+    {% block content %}
+    
+    <style>
+      .container2 {
+        padding: 30px;
+        background-color: white;
+      }
+    
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    
+      .sidebarcontent {
+        border-right: 1px solid #dee2e6;
+        padding-top: 20px;
+      }
+    
+      .sidebarcontent ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        flex-direction: column;
+      }
+    
+      .sidebarcontent li {
+        margin-bottom: 5px;
+        padding-right: 10px;
+      }
+    
+      .sidebarcontent a {
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #333;
+        transition: background-color 0.3s;
+      }
+    
+      .sidebarcontent a:hover {
+        background-color: #e9ecef;
+      }
+    
+      .sidebarcontent a.active {
+        color: rgba(2, 64, 188, 1);
+        background: rgba(79, 128, 225, 0.15);
+        border-radius: 0.41rem;
+      }
+    
+      .sidebarcontent b {
+        margin-right: 10px;
+      }
+    
+      .sidebarcontent span {
+        display: block;
+      }
+    
+      .icon-info::before {
+        content: "\1F6C8";
+      }
+    
+      .icon-document::before {
+        content: "\1F4C4";
+      }
+    
+      .icon-info::before,
+      .icon-document::before {
+        padding-right: 5px;
+      }
+    
+      .header-buttons {
+        display: flex;
+        gap: 12px;
+      }
+    
+      .header-buttons button {
+        width: 128px;
+        height: 48px;
+        padding: 13px 41px 13px 40px;
+        gap: 8px;
+        border-radius: 10px;
+        border: 2px solid #4F80E1;
+      }
+    
+      .content-buttons button {
+        width: 103px;
+        height: 37px;
+        padding: 10.02px 14px;
+        gap: 6.17px;
+        border-radius: 7.71px;
+        border: 1.54px solid #4F80E1;
+      }
+    
+      h1 {
+        margin-bottom: 0;
+      }
+    
+      header {
+        margin-bottom: 1px;
+      }
+    
+      .sidebarcontent nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        gap: 10px;
+      }
+    
+      .sidebarcontent nav ul li a {
+        text-decoration: none;
+        color: #333;
+        padding: 5px 10px;
+      }
+    
+      .sidebarcontent nav ul li a.active {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+      }
+    
+      .page-container2 {
+        display: flex;
+      }
+    
+      .main-content2 {
+        flex: 1;
+        padding: 0px 20px 10px 40px;
+      }
+    
+      .form-row {
+        display: flex;
+        gap: 0px;
+      }
+    
+      .form-group {
+        margin-bottom: 15px;
+        flex: 1;
+      }
+    
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+    
+      #ipoForm input[type="text"], input[type="date"],
+      select {
+        width: 90%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
+    
+      #ipoForm input[type="text"], input[type="text"]::placeholder,
+      select {
+        color: #000000;
+      }
+    
+      .btn-primary,
+      .btn-secondary {
+        padding: 10px 20px;
+        border-color: #007bff;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+    
+      .btn-primary {
+        background-color: #007bff;
+        color: white;
+      }
+    
+      .btn-secondary {
+        color: blue;
+      }
+    
+      .btn-primary1 {
+        background: #4F80E1;
+        color: white;
+      }
+    
+      .btn-secondary2 {
+        color: blue;
+      }
+    
+      .logo-container2 {
+        display: flex;
+        align-items: flex-start;
+        gap: 17px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+    
+      .logo-container2 img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+    
+      .logo-details {
+        display: flex;
+        flex-direction: column;
+      }
+    
+      .size {
+        font-size: small;
+      }
+    
+    </style>
+</head>
+
+<body>
+  <div class="container2">
+    <header>
+      <div class="header-content">
+        <div class="title">
+          <h1>Upcoming IPO Information</h1>
+          <p>Manage your IPO Details</p>
+        </div>
+        <div class="header-buttons">
+          <button type="button" id="registerBtn" class="btn-primary">Register</button>
+<a href="{% url 'admindashboard:manageIpo' %}">          
+          <button type="button" class="btn-secondary">Cancel</button></a>
+        </div>
+      </div>
+    </header>
+    <div class="page-container2">
+      <nav class="sidebarcontent">
+        <ul>
+          <li><a href="#" class="active">
+              <div><b class="icon-info">IPO Information</b></div>
+            </a></li><br>
+          <li><a href="#">
+              <div><b class="icon-document">IPO Info</b></div>
+            </a></li>
+        </ul>
+      </nav>
+      <main class="main-content2">
+        <h2>IPO Information</h2>
+        <p>Enter IPO Details</p>
+        <hr>
+        <form id="ipoForm" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="companyLogo"><b>Company Logo</b></label>
+            <div class="logo-container2">
+              <img id="logoPreview" src="{% static 'images/placeholder-logo.png' %}" alt="" style="width: 50px; height: 50px; border: 2px solid #333; border-radius: 50%;">
+              <div class="content-buttons" style="display: flex; gap: 1rem;">
+                <style>
+                  .btn-primary1 {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #fff;
+                    background-color: #007bff;
+                    border: none;
+                    border-radius: 4px;
+                    text-align: center;
+                    cursor: pointer;
+                    text-decoration: none;
+                    transition: background-color 0.3s ease;
+                }
+                
+                .btn-primary1:hover {
+                    background-color: #0056b3;
+                }
+                
+                .btn-primary1:active {
+                    background-color: #004085;
+                }
+                </style>
+                <label class="btn-primary1" for="logoUpload">Upload</label>
+                <input type="file" id="logoUpload" name="companyLogo" hidden>
+                <button type="button" id="deleteLogo" class="btn-secondary2">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="companyName">Company Name</label>
+              <input type="text" id="companyName" name="companyName" value="Vodafone Idea">
+            </div>
+            <div class="form-group">
+              <label for="priceBand">Price Band</label>
+              <input type="text" id="priceBand" name="priceBand" value="Not Issued">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="open">Open</label>
+              <input type="date" id="open" name="open" >
+            </div>
+            <div class="form-group">
+              <label for="close">Close</label>
+              <input type="date" id="close" name="close">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="issueSize">Issue Size</label>
+              <input type="text" id="issueSize" name="issueSize" value="2300 Cr.">
+            </div>
+            <div class="form-group">
+              <label for="issueType">Issue Type</label>
+              <select id="issueType" name="issueType">
+                <option value="">Select Issue Type</option>
+                <option value="Book Building">Book Building</option>
+                <option value="Fixed Price">Fixed Price</option>
+                <option value="Not Issued">Not Issued</option>
+                <!-- Add more options as needed -->
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="listingDate">Listing Date</label>
+              <input type="date" id="listingDate" name="listingDate" value="Not Issued">
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select id="status" name="status" >
+                <option value="">Select Status</option>
+                <option  value="Ongoing">Ongoing</option>
+                <option value="Upcoming">Upcoming</option>
+                <option value="Listed">Listed</option>
+                <option value="Not Issued">Not Issued</option>
+                <!-- Add more options as needed -->
+              </select>
+            </div>
+          </div>
+          <h3>NEW LISTED IPO DETAILS (WHEN IPO GET LISTED)</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ipoPrice">IPO Price</label>
+              <input type="text" id="ipoPrice" name="ipoPrice" value="383">
+            </div>
+            <div class="form-group">
+              <label for="listingPrice">Listing Price</label>
+              <input type="text" id="listingPrice" name="listingPrice" value="435">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="listingGain">Listing Gain</label>
+              <input type="text" id="listingGain" name="listingGain" value="13.58">
+            </div>
+            <div class="form-group">
+              <label for="listingDate2">Listing Date</label>
+              <input type="date" id="listingDate2" name="listingDate2">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cmp">CMP</label>
+              <input type="text" id="cmp" name="cmp" value="410">
+            </div>
+            <div class="form-group">
+              <label for="currentReturn">Current Return</label>
+              <input type="text" id="currentReturn" name="currentReturn" value="7.05">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="rhp">RHP</label>
+              <input type="text" id="rhp" name="rhp" value="https://example.com/rhp.pdf" placeholder="Enter RHP PDF Link">
+            </div>
+            <div class="form-group">
+              <label for="drhp">DRHP</label>
+              <input type="text" id="drhp" name="drhp"  value="https://example.com/drhp.pdf" placeholder="Enter DRHP PDF Link">
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  {% if messages %}
+  {% for message in messages %}
+  {% if 'success' in message.tags %}
+  <!-- <div style="text-align: left; font-size: .8rem; color: green; font-weight: bolder; font-family: sans-serif;" style="color: green;">
+    {{ message }}
+  </div> -->
+  <script>
+    alert("{{ message }}");
+  </script>
+  {% else %}
+  <!-- <div style="font-size: .8rem ;text-align: left; color: red; font-weight: bolder; font-family: sans-serif;">
+    {{ message }}
+  </div> -->
+  <!-- <br> -->
+  <script>
+    alert("{{ message }}");
+  </script>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('ipoForm');
+      const registerBtn = document.getElementById('registerBtn');
+      const uploadLogoInput = document.getElementById('logoUpload');
+      const deleteLogoBtn = document.getElementById('deleteLogo');
+      const logoPreview = document.getElementById('logoPreview');
+
+      // Handle image file selection and preview
+      uploadLogoInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            logoPreview.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      deleteLogoBtn.addEventListener('click', function() {
+        // Reset image to placeholder
+        logoPreview.src = '{% static "images/placeholder-logo.png" %}';
+        // Clear the file input
+        uploadLogoInput.value = '';
+      });
+
+      registerBtn.addEventListener('click', function() {
+        form.submit();  // Submit the form when the "Register" button is clicked
+      });
+    });
+
+    
+
+  </script>
+  {% endblock %}
+</body>
+</html>
